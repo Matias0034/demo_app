@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.Application.UserCreator;
 import com.example.demo.Domain.Model.User;
+import com.example.demo.Infrastructure.Service.StringProducerService;
 
 import lombok.AllArgsConstructor;
 
@@ -28,13 +29,14 @@ public class UserController {
     private final UserCreator userCreator;
 
     private SessionRegistry sessionRegistry;
+    private StringProducerService stringProducerService;
 
     @PostMapping("/save")
     public ResponseEntity<Void> saveDataUser(@RequestBody User user){
 
-        System.out.println("dsjdsjjds");
         userCreator.create(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        stringProducerService.sendMessage("user created in db");
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/session")
